@@ -4,7 +4,7 @@ from django.utils.html import format_html
 
 from backend.forms import CustomerUserCreationForm, CustomerUserChangeForm
 from backend.models import CustomUser, NewsLetter, Label, Tag, Discount, Brand, Company, Collection, SubCategory, \
-    ProductImage, ProductCategory, ProductLabel, ProductTag, ProductCollection, Cart
+    ProductImage, ProductCategory, ProductLabel, ProductTag, ProductCollection, Cart, OrderItem, Order
 
 
 # Register your models here.
@@ -146,3 +146,22 @@ class CartAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Cart, CartAdmin)
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1  # Number of empty forms to display
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'customer', 'order_date', 'total_amount', 'order_status', 'payment_method', 'order_number')
+    list_filter = ('order_status', 'payment_method', 'order_date')
+    search_fields = ('order_number', 'customer__username')  # Assuming CustomUser has a username field
+    readonly_fields = ('order_number', 'order_date')  # Fields that should be read-only
+    inlines = [OrderItemInline]  # Display OrderItem as inline within Order admin
+
+    def get_readonly_fields(self, request, obj=None):
+        # Additional logic to determine read-only fields
+        if obj:  # If editing an existing object
+            return self.readonly_fields + ('total_amount',)
+        return self.readonly_fields
+
+admin.site.register(Order, OrderAdmin)
