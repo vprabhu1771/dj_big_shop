@@ -4,7 +4,8 @@ from django.utils.html import format_html
 
 from backend.forms import CustomerUserCreationForm, CustomerUserChangeForm
 from backend.models import CustomUser, NewsLetter, Label, Tag, Discount, Brand, Company, Collection, SubCategory, \
-    ProductImage, ProductCategory, ProductLabel, ProductTag, ProductCollection, Cart, OrderItem, Order, Category
+    ProductImage, ProductCategory, ProductLabel, ProductTag, ProductCollection, Cart, OrderItem, Order, Category, \
+    Product
 
 
 # Register your models here.
@@ -173,3 +174,13 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('status',)
     inlines = [ProductCategoryInline]
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price',)
+    search_fields = ('name',)
+    list_filter = ('categories',)
+    inlines = [ProductCategoryInline, ProductTagInline, ProductLabelInline, ProductCollectionInline, ProductImageInline]
+
+
+admin.site.register(ProductCategory)
