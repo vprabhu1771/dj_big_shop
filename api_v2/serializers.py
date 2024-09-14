@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
-from backend.models import CustomUser
+from backend.models import CustomUser, Category
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -45,3 +45,9 @@ class EmailAuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'image_path']

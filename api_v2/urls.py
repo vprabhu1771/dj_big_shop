@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 
-from api_v2.views import UserCreateAPIView, CustomAuthToken, CurrentUserView, LogoutAPIView
+from api_v2.views import UserCreateAPIView, CustomAuthToken, CurrentUserView, LogoutAPIView, CategoryListView
 
 urlpatterns = [
     path('register', UserCreateAPIView.as_view(), name='create'),
@@ -16,4 +16,7 @@ urlpatterns = [
 
     # Logout
     path('logout', LogoutAPIView.as_view(), name='logout'),
+
+    # Category
+    path('categories', CategoryListView.as_view(), name = 'category_list'),
 ]
