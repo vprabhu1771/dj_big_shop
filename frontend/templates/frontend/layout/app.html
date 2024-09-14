@@ -29,6 +29,17 @@
     <!--Header Partial-->
     {% include 'frontend/layout/header.html' %}
 
+    {% if request.path == '/' %}
+
+        <main class="main">
+
+            <!--Slider Partial-->
+            {% include 'frontend/slider/type1.html' %}
+
+        </main>
+
+    {% endif %}
+
     <!--Footer Partial-->
     {% include 'frontend/layout/footer.html' %}
 
