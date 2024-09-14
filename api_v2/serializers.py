@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 
 from backend.models import CustomUser, Category, Brand, Label, ProductLabel, ProductCategory, Tag, ProductTag, \
-    Collection, ProductCollection, ProductImage, Product
+    Collection, ProductCollection, ProductImage, Product, SubCategory
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -130,3 +130,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'productCollection',
             'images'
         ]
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
+        fields = ['id', 'name']
