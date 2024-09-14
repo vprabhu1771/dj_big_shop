@@ -13,3 +13,6 @@ If you need to install these dependencies in another environment, you can use th
 
 ```bash
 pip install -r requirements.txt
+```
+
+Reinstall pip
