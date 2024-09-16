@@ -1,10 +1,11 @@
 from django.urls import path
 
-from frontend.views import forget_password, home, login
+from frontend.views import forget_password, home, login, register
 
 urlpatterns = [
     path('', home),
     # path('/', home, name='home'),
     path('login', login, name='login'),
+    path('register', register, name='register'),
     path('forget_password', forget_password),
 ]

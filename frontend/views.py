@@ -7,5 +7,8 @@ def home(request):
 def login(request):
     return render(request, 'frontend/auth/login.html')
 
+def register(request):
+    return render(request, 'frontend/auth/register.html')
+
 def forget_password(request):
     return render(request, 'frontend/forget_password.html')
