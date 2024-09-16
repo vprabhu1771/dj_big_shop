@@ -11,4 +11,4 @@ def register(request):
     return render(request, 'frontend/auth/register.html')
 
 def forget_password(request):
-    return render(request, 'frontend/forget_password.html')
+    return render(request, 'frontend/auth/forget_password.html')
