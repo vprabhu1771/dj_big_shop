@@ -179,7 +179,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price',)
     search_fields = ('name',)
-    list_filter = ('categories',)
+    list_filter = ('category',)
     inlines = [ProductCategoryInline, ProductTagInline, ProductLabelInline, ProductCollectionInline, ProductImageInline]
 
 
