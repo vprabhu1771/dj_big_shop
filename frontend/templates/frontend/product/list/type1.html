@@ -110,7 +110,20 @@
                                         <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
                                     </div>
                                     <div class="product-badges product-badges-position product-badges-mrg">
-                                        <span class="hot">Hot</span>
+
+                                        {% for label in row.productLabel.all %}
+                                            {% if label.name == 'Hot' %}
+                                            <span class="hot">{{ label.name }}</span>
+                                            {% endif %}
+                                            {% if label.name == 'New' %}
+                                            <span class="new">{{ label.name }}</span>
+                                            {% endif %}
+                                            {% if label.name == 'Sale' %}
+                                            <span class="sale">{{ label.name }}</span>
+                                            {% endif %}
+                                        {% empty %}
+                                            <a>No labels assigned</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="product-content-wrap">
