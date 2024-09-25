@@ -33,6 +33,10 @@ def home(request):
         # Pass filtered products to the template
         data['products'] = products
 
+        print(products)
+        for product in products:
+            print(product.category.all())
+
         return render(request, 'frontend/product/list/type1.html', data)
 
     return render(request, 'frontend/home.html', data)

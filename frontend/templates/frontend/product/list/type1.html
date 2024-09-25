@@ -115,7 +115,11 @@
                                 </div>
                                 <div class="product-content-wrap">
                                     <div class="product-category">
-                                        <a href="shop-grid-right.html">Snack</a>
+                                        {% for category in row.category.all %}
+                                            <a href="shop-grid-right.html">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                                        {% empty %}
+                                            <a>No categories assigned</a>
+                                        {% endfor %}
                                     </div>
                                     <h2><a href="shop-product-right.html">{{ row.name }}</a></h2>
                                     <div class="product-rate-cover">
