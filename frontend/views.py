@@ -41,6 +41,20 @@ def home(request):
 
     return render(request, 'frontend/home.html', data)
 
+def show(request, product_id):
+    # Retrieve the specific product using the provided product_id
+    product = get_object_or_404(Product, pk=product_id)
+
+    # Prepare the data to be passed to the template
+    data = {
+        'product': product,
+        'page_title': product.name,  # You can set the page title as per your requirement
+        'category': product.category,  # Optional: if you want to display the category
+    }
+
+    # Render the product detail template
+    return render(request, 'frontend/product/detail/type1.html', data)
+
 def login(request):
     return render(request, 'frontend/auth/login.html')
 

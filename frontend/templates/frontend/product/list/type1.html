@@ -99,7 +99,7 @@
                             <div class="product-cart-wrap mb-30">
                                 <div class="product-img-action-wrap">
                                     <div class="product-img product-img-zoom">
-                                        <a href="shop-product-right.html">
+                                        <a href="{% url 'show' product_id=row.id %}">
                                             <img class="default-img" src="{% static 'frontend/imgs/shop/product-1-1.jpg' %}" alt="" />
                                             <img class="hover-img" src="{% static 'frontend/imgs/shop/product-1-2.jpg' %}" alt="" />
                                         </a>
@@ -129,12 +129,12 @@
                                 <div class="product-content-wrap">
                                     <div class="product-category">
                                         {% for category in row.category.all %}
-                                            <a href="shop-grid-right.html">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+                                            <a href="{% url 'show' product_id=row.id %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
                                         {% empty %}
                                             <a>No categories assigned</a>
                                         {% endfor %}
                                     </div>
-                                    <h2><a href="shop-product-right.html">{{ row.name }}</a></h2>
+                                    <h2><a href="{% url 'show' product_id=row.id %}">{{ row.name }}</a></h2>
                                     <div class="product-rate-cover">
                                         <div class="product-rate d-inline-block">
                                             <div class="product-rating" style="width: 90%"></div>
