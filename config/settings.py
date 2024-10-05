@@ -163,3 +163,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     )
 }
+
+# URL for the login page
+LOGIN_URL = '/login'  # Adjust to match your URL pattern
+
+# URL to redirect to after login (optional)
+LOGIN_REDIRECT_URL = '/'  # Change this to where you want users to go after logging in
+
+# URL to redirect to after logout (optional)
+LOGOUT_REDIRECT_URL = '/'  # Change this to where you want users to go after logging out
