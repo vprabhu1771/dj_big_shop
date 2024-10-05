@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, get_object_or_404, redirect
 
 from backend.models import Product, Category
 
@@ -55,7 +57,20 @@ def show(request, product_id):
     # Render the product detail template
     return render(request, 'frontend/product/detail/type1.html', data)
 
-def login(request):
+def auth_login(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Authenticate the user
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            # Login the user
+            login(request, user)
+            return redirect('home')  # Redirect to a success page
+        else:
+            messages.error(request, 'Invalid email or password')
     return render(request, 'frontend/auth/login.html')
 
 def register(request):
