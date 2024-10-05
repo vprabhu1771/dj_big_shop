@@ -8,23 +8,44 @@ from backend.models import Product, Category, Cart
 
 # Create your views here.
 def home(request):
+    # Get the current logged-in user
+    user = request.user
+
+    # Prepare the initial data dictionary
+    data = {}
+
+    # If the user is authenticated, retrieve cart information
+    if user.is_authenticated:
+        # Print user email for debugging (remove in production)
+        print(user.email)
+
+        # Filter cart items for the current user
+        cart_items = Cart.objects.filter(custom_user=user)
+
+        # Calculate the grand total for the cart
+        grand_total = Cart.grand_total(customer_id=user.id)
+
+        # Add cart data to the context
+        data['cart_items'] = cart_items  # Pass the filtered cart items to the template
+        data['grand_total'] = grand_total
+        data['cart_count'] = cart_items.count()
+    else:
+        # If the user is not authenticated, set default cart values
+        data['cart_items'] = []
+        data['grand_total'] = 0
+        data['cart_count'] = 0
 
     # Retrieve all categories for use in the view
     categories = Category.objects.all()
+    data['categories'] = categories
 
     # Check if 'category' query parameter is present
     category_present = 'category' in request.GET
-
-    data = {
-        'categories': categories,
-        'category_present': category_present,
-    }
+    data['category_present'] = category_present
 
     # Apply category filter if category is present and is not 'All'
     category_id = request.GET.get('category')
-
     if category_id and category_id != 'All':
-
         # Filter products based on the selected category
         products = Product.objects.filter(category__id=category_id)
 
@@ -35,13 +56,15 @@ def home(request):
 
         # Pass filtered products to the template
         data['products'] = products
-
-        print(products)
-        for product in products:
-            print(product.category.all())
-
         return render(request, 'frontend/product/list/type1.html', data)
+    else:
+        # If no specific category is selected, show all products
+        products = Product.objects.all()
+        data['products'] = products
+        data['page_title'] = "All Products"
+        data['product_count'] = products.count()
 
+    # Render the template with the combined data
     return render(request, 'frontend/home.html', data)
 
 def show(request, product_id):
