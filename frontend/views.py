@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 
 from backend.models import Product, Category
@@ -72,6 +72,11 @@ def auth_login(request):
         else:
             messages.error(request, 'Invalid email or password')
     return render(request, 'frontend/auth/login.html')
+
+
+def auth_logout(request):
+    logout(request)  # Log out the user
+    return redirect('home')  # Redirect to the login page or home page
 
 def register(request):
     return render(request, 'frontend/auth/register.html')
