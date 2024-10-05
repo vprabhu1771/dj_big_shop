@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from backend.models import Product, Category
+from backend.models import Product, Category, Cart
 
 
 # Create your views here.
@@ -89,3 +90,87 @@ def account(request):
 
 def about(request):
     return render(request, 'frontend/auth/about.html')
+
+@login_required  # Ensures the user is authenticated
+def cart(request):
+    # Get the current logged-in user
+    user = request.user
+
+    # Print user email for debugging (only if the user is authenticated)
+    if user.is_authenticated:
+        print(user.email)
+
+        # Filter cart items for the current user
+        cart_items = Cart.objects.filter(custom_user=user)
+
+        # Calculate the grand total for the cart
+        grand_total = Cart.grand_total(customer_id=user.id)
+
+        # Prepare the data to be passed to the template
+        data = {
+            'cart_items': cart_items,  # Pass the filtered cart items to the template
+            'grand_total': grand_total,
+            'page_title': 'Cart',  # You can set the page title as per your requirement
+            'cart_count': cart_items.count()
+        }
+    else:
+        # If the user is not authenticated, handle accordingly
+        data = {
+            'cart_items': [],  # No cart items for unauthenticated users
+            'page_title': 'Cart',  # Page title remains the same
+            'error_message': 'You need to log in to view your cart.'  # Optional error message
+        }
+
+    return render(request, 'frontend/cart/index.html', data)
+
+@login_required
+def increase_quantity(request, id):
+    cart_item = get_object_or_404(Cart, id=id, custom_user=request.user)
+
+    if cart_item:
+        # Increase the quantity
+        cart_item.qty += 1
+        cart_item.save()
+        messages.success(request, f'Quantity increased for {cart_item.product.name} in your cart.')
+    else:
+        messages.error(request, 'Cart item not found.')
+
+    return redirect('cart')  # Adjust as necessary
+
+@login_required
+def decrease_quantity(request, id):
+    cart_item = get_object_or_404(Cart, id=id, custom_user=request.user)
+
+    # Decrease the quantity, ensuring it doesn't go below 1
+    if cart_item.qty > 1:
+        cart_item.qty -= 1
+        cart_item.save()
+        messages.success(request, f'Quantity decreased for {cart_item.product.name} in your cart.')
+    else:
+        messages.warning(request, f'Cannot decrease quantity for {cart_item.product.name} below 1.')
+
+    return redirect('cart')  # Adjust as necessary
+
+@login_required
+def remove_from_cart(request, id):
+    cart_item = get_object_or_404(Cart, id=id, custom_user=request.user)
+
+    # Remove the cart item
+    product_name = cart_item.product.name
+    cart_item.delete()
+
+    messages.success(request, f'{product_name} removed from your cart.')
+    return redirect('cart')  # Adjust as necessary
+
+
+@login_required
+def clear_cart(request):
+    cart_items = Cart.objects.filter(custom_user=request.user)
+
+    if cart_items.exists():
+        cart_items.delete()
+        messages.success(request, 'Cart cleared successfully.')
+    else:
+        messages.error(request, 'No items found in the cart.')
+
+    return redirect('cart')  # Adjust as necessary
