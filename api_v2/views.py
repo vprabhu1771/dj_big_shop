@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status, generics
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -45,7 +46,10 @@ class CustomAuthToken(ObtainAuthToken):
         # })
 
 
-        return  Response(token.key)
+        # return  Response(token.key)
+
+        # Return the token as plain text
+        return HttpResponse(token.key, content_type="text/plain")
 
 class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
