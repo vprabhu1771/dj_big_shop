@@ -1,7 +1,7 @@
 from django.urls import path
 
 from frontend.views import forget_password, home, auth_login, auth_logout, register, about, account, show, cart, \
-    increase_quantity, decrease_quantity, remove_from_cart, clear_cart
+    increase_quantity, decrease_quantity, remove_from_cart, clear_cart, add_to_cart
 
 urlpatterns = [
     path('', home, name='home'),
@@ -14,6 +14,7 @@ urlpatterns = [
     path('account', account, name='account'),
     path('about', about, name='about'),
     path('cart', cart, name='cart'),
+    path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
     path('cart/increase/<int:id>/', increase_quantity, name='increase_quantity'),
     path('cart/decrease/<int:id>/', decrease_quantity, name='decrease_quantity'),
     path('cart/remove/<int:id>/', remove_from_cart, name='remove_from_cart'),

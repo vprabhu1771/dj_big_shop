@@ -94,9 +94,11 @@
                                             </ul>
                                         </div>
                                         <div class="detail-extralink mb-50">
+                                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                                {% csrf_token %}
                                             <div class="detail-qty border radius">
                                                 <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <input type="text" name="quantity" class="qty-val" value="1" min="1">
+                                                <input type="text" name="qty" class="qty-val" value="1" min="1">
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                             <div class="product-extra-link2">
@@ -104,6 +106,7 @@
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
+                                            </form>
                                         </div>
                                         <div class="font-xs">
                                             <ul class="mr-50 float-start">

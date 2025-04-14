@@ -147,6 +147,28 @@ def cart(request):
     return render(request, 'frontend/cart/index.html', data)
 
 @login_required
+def add_to_cart(request, product_id):
+    # Get the product the user wants to add
+    product = get_object_or_404(Product, id=product_id)
+
+    # Check if this product already exists in the user's cart
+    cart_item, created = Cart.objects.get_or_create(
+        product=product,
+        custom_user=request.user,  # Use your user field name
+        defaults={'qty': 1}
+    )
+
+    if not created:
+        # Product already in cart, increase quantity
+        cart_item.qty += 1
+        cart_item.save()
+        messages.info(request, f'Increased quantity for {product.name}.')
+    else:
+        messages.success(request, f'Added {product.name} to your cart.')
+
+    return redirect('cart')  # Or redirect to product detail page
+
+@login_required
 def increase_quantity(request, id):
     cart_item = get_object_or_404(Cart, id=id, custom_user=request.user)
 
